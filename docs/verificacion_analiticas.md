@@ -24,7 +24,7 @@ Autor del examen: Junior Quauro (`jrssj`). Fecha de revisión: 9 de noviembre de
 
 ## Resultados de ejecución
 
-`mvn -B clean verify`: **54 pruebas aprobadas**, 0 fallos, 0 errores y 0 omitidas. Además, **2 recorridos reales de Main aprobados**, con inventario vacío y poblado. Ambas ejecuciones finalizaron con BUILD SUCCESS.
+`mvn -B clean verify`: **54 pruebas aprobadas**, 0 fallos, 0 errores y 0 omitidas. Además, **2 recorridos reales de Main aprobados**, con inventario vacío y poblado. Ambas ejecuciones finalizaron con BUILD SUCCESS. La segunda revisión completa terminó el 9 de noviembre a las 16:14 (Bogotá). También se ejecutaron 14 comprobaciones del flujo integrado de inventario, ventas, proveedores y logística: 14 aprobadas y 0 fallidas.
 
 Las pruebas utilizan una instancia local aislada de MySQL 8.4.13 y bases nuevas con el prefijo erp_inventory_test_. No se ejecutan contra bases comerciales. La configuración de Java utilizada es Temurin 17.0.21+9, Maven 3.9.16 y Connector/J 8.4.0.
 
@@ -44,4 +44,4 @@ El runner requiere una base vacía con prefijo erp_inventory_test_ y conserva lo
 - Uso de Stream API (10 puntos): groupingBy, map, reduce y max para el volumen; filter, map y distinct para vencidos. La consulta no calcula SUM, GROUP BY ni DISTINCT.
 - Dominio y conocimiento (13 puntos): requiere explicación y defensa personal del estudiante. La guía de sustentación incluye el recorrido, las lambdas, referencias a métodos, operaciones terminales y un ejemplo calculado a mano; el código por sí solo no acredita estos puntos.
 
-El repositorio privado requiere añadir al usuario correcto del trainer como colaborador. La publicación o una invitación pendiente no permiten afirmar que el profesor ya tiene acceso. No se debe hacer merge del PR antes de la revisión.
+Repositorio privado: `jrssj/javaExamen`. Trainer: `CRISTIAN7712`. Invitación de colaboración enviada y pendiente de aceptación; el acceso quedará activo cuando la acepte. El PR hacia main permanece abierto para revisión. La actualización del nombre solo modifica documentación; el código es idéntico al código comprobado con las 54 pruebas y los dos recorridos de menú.

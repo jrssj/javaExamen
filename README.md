@@ -6,26 +6,21 @@ Sistema ERP de consola para la bodega de alimentos Frescura Total. Resuelve el p
 
 ## Módulo de Analíticas
 
-Autor del examen: **Junior Quauro**, cuenta GitHub `jrssj`. Este ejercicio amplía la base del ERP del equipo Frescura Total.
+La opción **6. Generar Reporte de Rendimiento de Proveedores** muestra el proveedor con mayor volumen suministrado y los proveedores que tienen lotes con estado `Vencido`, sin repetir nombres. El reporte ayuda a compras a revisar el volumen de sus proveedores y hacer seguimiento de la calidad del inventario.
 
-Desde **6. Generar Reporte de Rendimiento de Proveedores**, compras puede conocer al proveedor con mayor volumen histórico de suministro y detectar proveedores con lotes vencidos para revisar sus condiciones y calidad.
+Los datos se consultan por JDBC relacionando lotes, proveedores y estados. `SupplierAnalyticsService` usa Streams para agrupar por ID, sumar `cantidad_inicial` con `BigDecimal` y seleccionar el máximo. Para los vencidos usa `filter`, `map` y `distinct`. Si no hay lotes, se informa que no hay datos suficientes; si falla MySQL, se muestra un error de conexión.
 
-`JdbcSupplierAnalyticsRepository` relaciona `lotes_inventario`, `proveedores` y `estados_lote` mediante JDBC y transforma cada fila en un `SupplierLotSnapshot`. La consulta obtiene filas individuales: los cálculos se hacen en `SupplierAnalyticsService` con **Stream API**.
-
-- El servicio usa `groupingBy` con el ID de proveedor. Para cada grupo transforma sus lotes en cantidades iniciales con `map` y las suma mediante `reduce(BigDecimal.ZERO, BigDecimal::add)`. Después `max` selecciona el mayor volumen. Cuenta todos los estados y admite cualquiera de los proveedores empatados.
-- La segunda estadística usa `filter` con el estado exacto `Vencido`, `map` para extraer los nombres, `distinct` para quitar repeticiones y `sorted` para mostrarlos en orden.
-
-Se suma `cantidad_inicial`, no las existencias actuales ni el precio. Si no hay lotes se muestra **«No hay datos de inventario suficientes para generar estadísticas.»** Una consulta que falla informa un error de conexión; una lista de vencidos vacía tiene su propio mensaje. El reporte consulta y presenta datos sin modificar el inventario.
-
-El paquete nuevo es `frescuratotal.erp.suppliers.analytics`: el repositorio lee, el servicio calcula, el controlador coordina y la vista imprime en español. `Main` conserva la revisión diaria de calidad del ERP antes de mostrar el menú.
-
-Pruebas rápidas sin MySQL:
+Pruebas del servicio y la vista, sin conexión a MySQL:
 
 ```powershell
 mvn "-Dtest=SupplierAnalyticsServiceTest,SupplierAnalyticsViewTest" test
 ```
 
-Para las pruebas JDBC se necesita un MySQL dedicado con el esquema de `docs/database.sql` y la configuración de pruebas descrita más abajo. Consulte [verificación del examen](docs/verificacion_analiticas.md) y [guía para la sustentación](docs/guia_sustentacion_analiticas.md).
+Las pruebas JDBC y de consola se explican en [verificación del examen](docs/verificacion_analiticas.md). Para repasar el recorrido del código está la [guía de sustentación](docs/guia_sustentacion_analiticas.md).
+
+## Autor del examen
+
+Junior Quauro (`jrssj`). El ejercicio amplía el ERP desarrollado por el equipo Frescura Total.
 
 ## Requerimientos previos
 
@@ -62,7 +57,7 @@ Para las pruebas JDBC se necesita un MySQL dedicado con el esquema de `docs/data
 1. Clone el repositorio:
 
    ```
-   git clone --branch feat/supplier-analytics-report https://github.com/jrssj/Examen-Java-Proveedores.git
+   git clone --branch feat/supplier-analytics-report https://github.com/jrssj/javaExamen.git
    ```
 
 2. Abra NetBeans y use **File → Open Project**, eligiendo la carpeta clonada.
@@ -166,3 +161,7 @@ Para repetir, cambie el nombre de la base inicial por uno nuevo. Las pruebas con
 El script crea un nombre de prueba nuevo; no requiere modificar estados a mano. Consulte resultados y límites en `docs/verificacion_integrada.md`. La interfaz de NetBeans debe abrirse con JDK 17 y las mismas variables; la compilación comprobada se realizó mediante Maven.
 
 Para entregar el examen, compruebe el acceso del trainer como colaborador del repositorio privado y comunique el hash completo del último commit de `feat/supplier-analytics-report` (`git rev-parse HEAD`). El PR hacia `main` debe permanecer abierto para revisión. La funcionalidad del examen está en la rama del PR, por lo que la instalación anterior clona esa rama explícitamente.
+
+## Entrega del examen
+
+Repositorio privado: `jrssj/javaExamen`. Rama de desarrollo: `feat/supplier-analytics-report`. El PR hacia `main` permanece abierto. El trainer es `CRISTIAN7712`. La invitación de colaboración está enviada y pendiente de aceptación.
