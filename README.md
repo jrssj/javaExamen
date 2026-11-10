@@ -165,3 +165,5 @@ Para entregar el examen, compruebe el acceso del trainer como colaborador del re
 ## Entrega del examen
 
 Repositorio privado: `jrssj/javaExamen`. Rama de desarrollo: `feat/supplier-analytics-report`. El PR hacia `main` permanece abierto. El trainer es `CRISTIAN7712`. La invitación de colaboración está enviada y pendiente de aceptación.
+
+cambio prueba
