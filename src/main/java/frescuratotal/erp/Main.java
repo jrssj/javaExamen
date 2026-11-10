@@ -14,6 +14,10 @@ import frescuratotal.erp.suppliers.controller.SupplierController;
 import frescuratotal.erp.suppliers.repository.JdbcPurchaseHistoryRepository;
 import frescuratotal.erp.suppliers.repository.JdbcSupplierRepository;
 import frescuratotal.erp.suppliers.view.SupplierView;
+import frescuratotal.erp.suppliers.analytics.JdbcSupplierAnalyticsRepository;
+import frescuratotal.erp.suppliers.analytics.SupplierAnalyticsController;
+import frescuratotal.erp.suppliers.analytics.SupplierAnalyticsService;
+import frescuratotal.erp.suppliers.analytics.SupplierAnalyticsView;
 
 import java.util.Scanner;
 
@@ -45,6 +49,8 @@ public class Main {
                 scanner, "logistica");
         // Sales checks with inventory whether a lot can be sold, through the adapter.
         SalesController salesController = SalesModuleFactory.create(scanner, new InventoryLotSaleValidator());
+        SupplierAnalyticsView analyticsView = new SupplierAnalyticsView(
+                new SupplierAnalyticsController(new JdbcSupplierAnalyticsRepository(), new SupplierAnalyticsService()), System.out);
 
         boolean exit = false;
         while (!exit) {
@@ -56,6 +62,7 @@ public class Main {
             System.out.println("3. Logística");
             System.out.println("4. Ventas y facturación");
             System.out.println("5. Cambiar rol de demostración (actual: " + session.getRole().getLabel() + ")");
+            System.out.println("6. Generar Reporte de Rendimiento de Proveedores");
             System.out.println("0. Salir");
             System.out.print("Opción: ");
             if (!scanner.hasNextLine()) { break; }
@@ -75,6 +82,8 @@ public class Main {
                 if (role.equals("1") || role.equals("2")) {
                     session.setRole(role.equals("2") ? frescuratotal.erp.common.UserSession.Role.INSPECTOR : frescuratotal.erp.common.UserSession.Role.OPERATOR);
                 } else { System.out.println("Rol inválido; se conserva el rol anterior."); }
+            } else if (option.equals("6")) {
+                analyticsView.showReport();
             } else if (option.equals("0")) {
                 exit = true;
             } else {

@@ -4,11 +4,23 @@
 
 Sistema ERP de consola para la bodega de alimentos Frescura Total. Resuelve el problema de controlar en un solo lugar el inventario por lotes y su calidad, las ventas y facturación, el abastecimiento con proveedores y la logística de entrega. Permite saber qué producto hay, de qué proveedor viene y cuándo vence, y seguir cada pedido desde su preparación hasta que llega al cliente. Está hecho en Java con arquitectura MVC por componentes y una base de datos MySQL.
 
+## Módulo de Analíticas
+
+La opción **6. Generar Reporte de Rendimiento de Proveedores** muestra el proveedor con mayor volumen suministrado y los proveedores que tienen lotes con estado `Vencido`, sin repetir nombres. El reporte ayuda a compras a revisar el volumen de sus proveedores y hacer seguimiento de la calidad del inventario.
+
+Los datos se consultan por JDBC relacionando lotes, proveedores y estados. `SupplierAnalyticsService` usa Streams para agrupar por ID, sumar `cantidad_inicial` con `BigDecimal` y seleccionar el máximo. Para los vencidos usa `filter`, `map` y `distinct`. Si no hay lotes, se informa que no hay datos suficientes; si falla MySQL, se muestra un error de conexión.
+
+Pruebas del servicio y la vista, sin conexión a MySQL:
+
+```powershell
+mvn "-Dtest=SupplierAnalyticsServiceTest,SupplierAnalyticsViewTest" test
+```
+
+Las pruebas JDBC y de consola se explican en [verificación del examen](docs/verificacion_analiticas.md). Para repasar el recorrido del código está la [guía de sustentación](docs/guia_sustentacion_analiticas.md).
+
 ## Autor del examen
 
-Base del ERP desarrollada por el equipo Frescura Total.
-
-El ejercicio utiliza como base un ERP existente organizado por componentes.
+Junior Quauro (`jrssj`). El ejercicio amplía el ERP desarrollado por el equipo Frescura Total.
 
 ## Requerimientos previos
 
@@ -45,7 +57,7 @@ El ejercicio utiliza como base un ERP existente organizado por componentes.
 1. Clone el repositorio:
 
    ```
-   git clone https://github.com/jrssj/Examen-Java-Proveedores.git
+   git clone --branch feat/supplier-analytics-report https://github.com/jrssj/javaExamen.git
    ```
 
 2. Abra NetBeans y use **File → Open Project**, eligiendo la carpeta clonada.
@@ -148,4 +160,10 @@ Para repetir, cambie el nombre de la base inicial por uno nuevo. Las pruebas con
 
 El script crea un nombre de prueba nuevo; no requiere modificar estados a mano. Consulte resultados y límites en `docs/verificacion_integrada.md`. La interfaz de NetBeans debe abrirse con JDK 17 y las mismas variables; la compilación comprobada se realizó mediante Maven.
 
-Para la entrega final, el propietario debe comprobar el acceso del trainer como colaborador del repositorio privado y comunicar el hash completo del commit elegido (`git rev-parse HEAD`). Las correcciones de `fix/integrated-release-validation` están integradas en `main`, junto con los diagramas aportados posteriormente por el equipo.
+Para entregar el examen, compruebe el acceso del trainer como colaborador del repositorio privado y comunique el hash completo del último commit de `feat/supplier-analytics-report` (`git rev-parse HEAD`). El PR hacia `main` debe permanecer abierto para revisión. La funcionalidad del examen está en la rama del PR, por lo que la instalación anterior clona esa rama explícitamente.
+
+## Entrega del examen
+
+Repositorio privado: `jrssj/javaExamen`. Rama de desarrollo: `feat/supplier-analytics-report`. El PR hacia `main` permanece abierto. El trainer es `CRISTIAN7712`. La invitación de colaboración está enviada y pendiente de aceptación.
+
+cambio prueba
